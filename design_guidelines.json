@@ -1,0 +1,106 @@
+{
+  "theme_strategy": {
+    "mode": "dark",
+    "rationale": "Cinematic night stadium atmosphere. Avoids the generic 'green grass' cliché by focusing on tactical precision and broadcast aesthetics."
+  },
+  "typography": {
+    "headings": {
+      "family": "Barlow Condensed",
+      "weights": ["600", "700", "900"],
+      "usage": "Use for all major headings, scores, and player names in the broadcast view. Requires tight tracking (tracking-tight or tracking-tighter) and uppercase styling for maximum athletic impact."
+    },
+    "body": {
+      "family": "IBM Plex Sans",
+      "weights": ["400", "500", "600"],
+      "usage": "Use for forms, technical data, player stats, and general dashboard UI. Geometric and legible at small sizes."
+    },
+    "scale": {
+      "h1": "text-5xl sm:text-6xl+ uppercase tracking-tighter font-black",
+      "h2": "text-4xl uppercase tracking-tight font-bold",
+      "h3": "text-2xl uppercase tracking-tight font-semibold",
+      "score": "text-7xl sm:text-8xl font-black tracking-tighter",
+      "body": "text-base leading-relaxed",
+      "labels": "text-xs uppercase tracking-[0.2em] font-semibold"
+    }
+  },
+  "colors": {
+    "archetype": "The Performance Pro",
+    "backgrounds": {
+      "base": "#0A0A0A",
+      "surface": "#141414",
+      "surface_elevated": "#1F1F1F"
+    },
+    "brand": {
+      "primary": "#FF3B30",
+      "primary_hover": "#FF5C53",
+      "secondary": "#007AFF",
+      "secondary_hover": "#3395FF"
+    },
+    "borders": {
+      "default": "rgba(255, 255, 255, 0.1)",
+      "focus": "#FF3B30"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "rgba(255, 255, 255, 0.6)",
+      "muted": "rgba(255, 255, 255, 0.4)"
+    }
+  },
+  "visual_enhancers": {
+    "surfaces": "Use 'Tactical Minimalism'. Hard 1px borders (border-white/10) with solid backgrounds (bg-[#141414]) rather than muddy glassmorphism for the dashboard. Use 'Crystal Glass' (backdrop-blur-2xl bg-black/60 border border-white/20) ONLY for the final broadcast image overlay.",
+    "textures": "Incorporate subtle noise/grain overlays over hero sections and the tactical board to remove digital flatness.",
+    "shadows": "Replace soft shadows with sharp 1px strokes and 'Inner Glow' highlights for buttons and active states."
+  },
+  "layouts_and_grids": {
+    "dashboard_general": "Bento Grid System. High-density, asymmetrical. grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-6.",
+    "tactical_board": "Dominates the screen (col-span-12 lg:col-span-8). Contains the interactive pitch. Maintain a dark, technical pitch outline (1px white/20 lines) over a deep obsidian/charcoal background.",
+    "event_controls": "col-span-12 lg:col-span-4. A dense, vertically stacked control center for subs, goals, and cards.",
+    "broadcast_export_view": "A hidden or dynamically rendered absolute container with a cinematic background image. It uses fixed dimensions (e.g., 1920x1080 scaled down) to ensure the exported PNG is perfect. Symmetrical TV-style score bug at the top, tactical lineups side-by-side below, match events ticker at the bottom."
+  },
+  "components_strategy": {
+    "forms": "Use Shadcn UI (Input, Select, Form). Labels must be PT-BR. Inputs should have bg-transparent, border-white/10, focus:border-primary.",
+    "buttons": "Sharp edges (rounded-none or max rounded-sm). High-saturation primary colors for CTAs. Include micro-interactions (hover:-translate-y-0.5, transition-transform).",
+    "tactical_player_node": "Draggable circular or shield-shaped nodes. Player photo inside, name and number below. Use 'dnd-kit' or 'react-beautiful-dnd' for drag-and-drop logic.",
+    "image_generation": "Use 'html2canvas' or 'html-to-image' library. The target div should feature the 'stadium_lights' image as a background, covered by a bg-black/50 scrim, with high-contrast text and team shields."
+  },
+  "image_urls": {
+    "stadium_lights_twilight": {
+      "url": "https://images.pexels.com/photos/32471031/pexels-photo-32471031.jpeg",
+      "description": "Beautiful twilight stadium lights. Use as the background for the final exported Broadcast PNG.",
+      "category": "backgrounds"
+    },
+    "stadium_aerial": {
+      "url": "https://images.pexels.com/photos/3158350/pexels-photo-3158350.jpeg",
+      "description": "Aerial illuminated field at night. Can be used for the login/auth screen background with a heavy dark overlay.",
+      "category": "backgrounds"
+    }
+  },
+  "motion_and_interactions": {
+    "hover_states": "All interactive elements must explicitly set text color and background on hover. E.g., hover:bg-[#1F1F1F] hover:text-white.",
+    "drag_and_drop": "Player nodes on the tactical board should scale up slightly (scale-105) and gain a drop shadow while being dragged.",
+    "page_transitions": "Subtle fade-in and slide-up for dashboard elements using Framer Motion."
+  },
+  "accessibility_and_testing": {
+    "contrast": "Ensure all text meets WCAG AA standards. Never use gray-on-gray. Use text-shadow on text that overlays the broadcast image.",
+    "data_testid": "MANDATORY. Every button, form input, tactical node, and interactive element MUST have a descriptive data-testid (e.g., data-testid=\"login-submit-button\", data-testid=\"player-node-10\")."
+  },
+  "instructions_to_main_agent": {
+    "language": "All user-facing text MUST be in Brazilian Portuguese (PT-BR).",
+    "auth": "Implement simple JWT login flow.",
+    "tactical_logic": "Implement fixed formation presets (4-4-2, 4-3-3, 3-5-2) that auto-position players, PLUS free drag-and-drop overriding.",
+    "export_logic": "The final PNG must be cinematic. Do not just screenshot the dashboard. Create a dedicated visually rich 'Broadcast Overlay' component that receives the match state, renders beautifully, and is captured via html-to-image.",
+    "libraries": "Install and use 'dnd-kit' (or similar) for dragging, 'html-to-image' for PNG export, 'lucide-react' for icons."
+  },
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "You tend to converge toward generic, 'on distribution' outputs. Avoid this: make creative, distinctive frontends that surprise and delight.",
+    "Do not use dark colors as gradients.",
+    "Don't make generic centered layouts. Create depth through layered design elements with z-index hierarchy.",
+    "You MUST NOT apply universal transition (e.g., transition: all). Add transitions for specific interactive elements only.",
+    "You MUST NOT center align the app container (.App { text-align: center; }).",
+    "Always use modern button styles (sharp edges for this tactical theme) with interaction animations.",
+    "NEVER use AI assistant Emoji characters (🤖🧠💭💡) for icons. Use Phosphor or Lucide.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Use 'sonner' for toasts.",
+    "Examine existing components in src/components/ui to understand the project's component patterns before creating new ones."
+  ]
+}
