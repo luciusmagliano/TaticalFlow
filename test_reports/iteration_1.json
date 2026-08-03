@@ -1,0 +1,43 @@
+{
+  "summary": "First-finish smoke test of TaticaFlow backend + frontend. All critical backend endpoints (auth/clubs/players/matches/upload/files/cascade) and full frontend flow (register -> dashboard -> clubs -> 11 players -> match -> editor -> formation 4-4-2 -> goal event increments score -> export PNG) pass end-to-end.",
+  "tested_scope": ["backend", "frontend", "auth", "integration"],
+  "passed": [
+    "POST /api/auth/register returns token and creates user (200)",
+    "POST /api/auth/login: valid=200, invalid=401",
+    "GET /api/auth/me with Bearer token returns user",
+    "POST /api/upload accepts image and returns {path,url}; GET /api/files/{path} returns 200 bytes",
+    "Clubs CRUD (create/list) works, user-scoped",
+    "Players CRUD + filter by club_id works (returns 1 for filtered club)",
+    "Matches CRUD: create sets defaults (0-0 scheduled), PUT partial update accepts {home_score, status}",
+    "DELETE /api/clubs cascades player deletion (remaining players=0)",
+    "Frontend /auth register auto-logs in and redirects to /",
+    "Dashboard shows Clubes/Jogadores/Partidas counters",
+    "/clubes: add-club modal + save-club creates clubs",
+    "/jogadores: creates player with native <select> for position/club",
+    "/partidas: creates match with 2 different clubs; link opens editor",
+    "MatchEditor: formation-4-4-2 places 11 players on pitch automatically",
+    "MatchEditor: adding GOL event (min 10, TMA, Jogador 1) updates score to 1-0 in real time and shows in timeline",
+    "MatchEditor: export-image-btn triggers download of partida-TMA-TMB.png and button returns to 'GERAR IMAGEM'"
+  ],
+  "failed": [
+    {
+      "area": "MatchEditor export (non-blocking)",
+      "issue": "html-to-image emits SecurityError when reading cross-origin Google Fonts CSS rules during PNG generation. Download still succeeds, but console shows errors.",
+      "evidence": "Console: 'Error while reading CSS rules from https://fonts.googleapis.com/css2?family=Inter... SecurityError: Failed to read the cssRules property from CSSStyleSheet'. Download event fired with partida-TMA-TMB.png.",
+      "priority": "LOW"
+    },
+    {
+      "area": "MatchEditor DOM (cosmetic)",
+      "issue": "React hydration warning: <span> injected inside <option> by dev instrumentation (x-ve-dynamic attribute). Does not affect functionality.",
+      "evidence": "Console: 'In HTML, %s cannot be a child of %s ... <span> option'",
+      "priority": "LOW"
+    }
+  ],
+  "action_items": [
+    "Optional: embed Inter font locally or preload as data URL to avoid html-to-image CORS warning during export (not blocking).",
+    "Optional: suppress ve dev-tool span injection inside <option> to eliminate hydration warning."
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true
+}
